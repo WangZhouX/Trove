@@ -1,0 +1,6 @@
+/target/
+/.anchor/
+/test-ledger/
+*-keypair.json
+.env
+.env.*

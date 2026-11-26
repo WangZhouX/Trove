@@ -1,0 +1,12 @@
+[toolchain]
+# 与 Rust 依赖和 WSL 中验证过的工具保持一致。
+# Match the Rust dependencies and the toolchain verified in WSL.
+anchor_version = "1.2.2"
+solana_version = "4.1.2"
+
+[programs.localnet]
+trove = "Aksy3SzNJhz65n3UfwJGjPJd2gsTRvuVrKur19ryfEQT"
+
+[provider]
+cluster = "localnet"
+wallet = "~/.config/solana/id.json"

@@ -1,0 +1,12 @@
+server:
+  address: ${TROVE_HTTP_HOST:127.0.0.1}
+  port: ${TROVE_HTTP_PORT:8080}
+
+spring:
+  application:
+    name: trove-backend
+  datasource:
+    # PostgreSQL 连接信息来自运行环境。/ PostgreSQL connection settings come from the runtime environment.
+    url: ${TROVE_DB_URL}
+    username: ${TROVE_DB_USER}
+    password: ${TROVE_DB_PASSWORD}

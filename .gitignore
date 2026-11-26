@@ -1,0 +1,10 @@
+# 本地原型、开发规则和设计材料。 / Local prototype, development rules, and design materials.
+/prototype/
+/AGENTS.md
+/docs/**
+!/docs/**/
+!/docs/**/*.sql
+
+# 本机 IDE 配置。 / Local IDE settings.
+.idea/
+*.iml

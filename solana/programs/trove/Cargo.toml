@@ -1,0 +1,28 @@
+[package]
+name = "trove"
+version = "0.1.0"
+description = "Trove collectible marketplace program"
+edition.workspace = true
+rust-version.workspace = true
+publish = false
+
+[lib]
+crate-type = ["cdylib", "lib"]
+
+[features]
+default = []
+cpi = ["no-entrypoint"]
+no-entrypoint = []
+no-log-ix-name = []
+# Anchor CLI 通过此特性生成客户端接口描述。
+# The Anchor CLI enables this feature to generate the client interface.
+idl-build = ["anchor-lang/idl-build"]
+anchor-debug = []
+custom-heap = []
+custom-panic = []
+
+[dependencies]
+anchor-lang.workspace = true
+
+[lints.rust]
+unexpected_cfgs = { level = "warn", check-cfg = ['cfg(target_os, values("solana"))'] }

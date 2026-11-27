@@ -2,5 +2,7 @@
 export const appConfig = {
   apiBaseUrl: import.meta.env.VITE_API_BASE_URL?.trim() || "http://127.0.0.1:8080",
   solanaRpcUrl: import.meta.env.VITE_SOLANA_RPC_URL?.trim() || "https://api.devnet.solana.com",
+  /** 发送给认证接口的网络，与 RPC 目标一致。 / Auth network, matching the RPC target. */
+  network: "devnet",
   networkLabel: "Solana Devnet",
 } as const;

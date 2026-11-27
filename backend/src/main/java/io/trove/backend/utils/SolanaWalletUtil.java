@@ -25,6 +25,11 @@ public final class SolanaWalletUtil {
     private static final String BASE58_ALPHABET = "123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz";
     private static final BigInteger BASE58_RADIX = BigInteger.valueOf(58);
     private static final int PUBLIC_KEY_BYTES = 32;
+    private static final int MAX_BASE58_PUBLIC_KEY_LENGTH = 44;
+
+    // 信封中的交易签名使用 Base58 编码，64 字节最多编码为 88 字符。
+    // A transaction signature uses Base58, with at most 88 characters for 64 bytes.
+    private static final int MAX_BASE58_SIGNATURE_LENGTH = 88;
 
     // Ed25519 签名为 64 字节，标准 Base64 最长 88 个字符，含填充。
     // An Ed25519 signature is 64 bytes and at most 88 standard Base64 characters with padding.
@@ -62,6 +67,17 @@ public final class SolanaWalletUtil {
      */
     public static boolean isAddress(String address) {
         return decodeAddress(address) != null;
+    }
+
+    /**
+     * 校验输入是否为规范的 64 字节 Solana 交易签名编码，不验证链上执行结果。
+     * Checks the canonical 64-byte Solana transaction signature encoding, without proving execution.
+     *
+     * @param signature Solana 交易标识的 Base58 字符串 / Base58 Solana transaction identifier
+     * @return 交易签名格式正确时为 true / true when the transaction signature is structurally valid
+     */
+    public static boolean isTransactionSignature(String signature) {
+        return decodeBase58(signature, SIGNATURE_BYTES, MAX_BASE58_SIGNATURE_LENGTH) != null;
     }
 
     /**
@@ -130,39 +146,52 @@ public final class SolanaWalletUtil {
      * @return 原始公钥，格式不合法时为 null / the raw public key, or null for malformed input
      */
     private static byte[] decodeAddress(String address) {
-        if (address == null || address.length() < 32 || address.length() > 44) {
+        return decodeBase58(address, PUBLIC_KEY_BYTES, MAX_BASE58_PUBLIC_KEY_LENGTH);
+    }
+
+    /**
+     * 解码到指定字节宽度，避免接受多余的前导零或超过边界的输入。
+     * Decodes to the expected byte width, rejecting extra leading zeros and oversized input.
+     *
+     * @param encoded Base58 文本 / Base58 encoded value
+     * @param width 期望解码后的字节数 / expected decoded byte count
+     * @param maxLength Base58 文本允许的最大字符数 / maximum permitted Base58 character count
+     * @return 符合宽度的原始字节，编码无效时为空 / bytes of the requested width, or null for invalid encoding
+     */
+    private static byte[] decodeBase58(String encoded, int width, int maxLength) {
+        if (encoded == null || encoded.length() < width || encoded.length() > maxLength) {
             return null;
         }
 
         // Base58 中每个前导字符 1 表示一个前导零字节，不参与整数位宽计算。
         // Each leading Base58 digit 1 encodes a leading zero byte outside the integer magnitude.
         int leadingZeros = 0;
-        while (leadingZeros < address.length() && address.charAt(leadingZeros) == '1') {
+        while (leadingZeros < encoded.length() && encoded.charAt(leadingZeros) == '1') {
             leadingZeros++;
         }
 
         // 还原其余字符表示的无符号整数。
         // Recover the unsigned integer represented by the remaining digits.
         BigInteger integer = BigInteger.ZERO;
-        for (int index = leadingZeros; index < address.length(); index++) {
-            int digit = BASE58_ALPHABET.indexOf(address.charAt(index));
+        for (int index = leadingZeros; index < encoded.length(); index++) {
+            int digit = BASE58_ALPHABET.indexOf(encoded.charAt(index));
             if (digit < 0) {
                 return null;
             }
             integer = integer.multiply(BASE58_RADIX).add(BigInteger.valueOf(digit));
         }
 
-        // BigInteger 可能附加符号字节，将其移除后校验编码明确表示 32 字节。
-        // Remove BigInteger's optional sign byte and verify that the encoded value represents exactly 32 bytes.
+        // BigInteger 可能附加符号字节，将其移除后校验指定宽度。
+        // Remove BigInteger's optional sign byte and verify that the encoded value has the expected width.
         byte[] magnitude = integer.toByteArray();
         int magnitudeStart = magnitude[0] == 0 ? 1 : 0;
         int magnitudeLength = magnitude.length - magnitudeStart;
-        if (leadingZeros + magnitudeLength != PUBLIC_KEY_BYTES) {
+        if (leadingZeros + magnitudeLength != width) {
             return null;
         }
 
-        byte[] publicKey = new byte[PUBLIC_KEY_BYTES];
-        System.arraycopy(magnitude, magnitudeStart, publicKey, leadingZeros, magnitudeLength);
-        return publicKey;
+        byte[] decoded = new byte[width];
+        System.arraycopy(magnitude, magnitudeStart, decoded, leadingZeros, magnitudeLength);
+        return decoded;
     }
 }

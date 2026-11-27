@@ -46,6 +46,15 @@ public record RedemptionReceiptDO(
         @TableField("verified_at") OffsetDateTime verifiedAt
 ) {
 
+    /** @return 链上凭证关联的私有草稿编号 / private draft reference associated with the on-chain receipt */
+    public UUID getDraftId() {
+        return draftId;
+    }
+    /** @return 凭证的链上兑换人公钥 / on-chain redeemer public key on the receipt */
+    public String getRedeemerWallet() {
+        return redeemerWallet;
+    }
+
     /**
      * 供 MyBatis-Plus Lambda 查询读取 {@code network} 主键列。
      * Exposes the primary-key column {@code network} for MyBatis-Plus Lambda queries.
@@ -64,5 +73,15 @@ public record RedemptionReceiptDO(
      */
     public UUID getItemId() {
         return itemId;
+    }
+
+    /**
+     * 供 MyBatis-Plus Lambda 查询定位最终确认的兑换交易签名。
+     * Supports MyBatis-Plus Lambda queries that match the signature of the finalized redemption transaction.
+     *
+     * @return 最终确认的兑换交易签名 / signature of the finalized redemption transaction
+     */
+    public String getTxSignature() {
+        return txSignature;
     }
 }

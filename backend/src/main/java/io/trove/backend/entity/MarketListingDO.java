@@ -91,4 +91,61 @@ public record MarketListingDO(
     public BigInteger getListingNo() {
         return listingNo;
     }
+
+    /**
+     * 供 MyBatis-Plus Lambda 查询定位挂单卖家钱包的 Solana 公钥。
+     * Supports MyBatis-Plus Lambda queries that match the Solana public key of the listing seller.
+     *
+     * @return 挂单卖家钱包的 Solana 公钥 / Solana public key of the listing seller
+     */
+    public String getSellerWallet() {
+        return sellerWallet;
+    }
+
+    /**
+     * 供 MyBatis-Plus Lambda 查询定位最终确认的开单交易签名。
+     * Supports MyBatis-Plus Lambda queries that match the signature of the finalized listing creation transaction.
+     *
+     * @return 最终确认的开单交易签名 / signature of the finalized listing creation transaction
+     */
+    public String getOpenTxSignature() {
+        return openTxSignature;
+    }
+
+    /**
+     * 供 MyBatis-Plus Lambda 查询定位最近应用到挂单的最终确认交易签名。
+     * Supports MyBatis-Plus Lambda queries that match the signature of the latest finalized transaction linked to the listing.
+     *
+     * @return 最近应用到挂单的最终确认交易签名 / signature of the latest finalized transaction linked to the listing
+     */
+    public String getLastTxSignature() {
+        return lastTxSignature;
+    }
+
+    /**
+     * 支持 MyBatis-Plus Lambda 条件。 / Provides the getter used in MyBatis-Plus Lambda conditions.
+     *
+     * @return 已索引的挂单状态，用于筛选有效挂单 / indexed listing status used to filter active listings
+     */
+    public String getStatus() {
+        return status;
+    }
+
+    /**
+     * 支持 MyBatis-Plus Lambda 条件。 / Provides the getter used in MyBatis-Plus Lambda conditions.
+     *
+     * @return 挂单投影最近更新时间，用于排序 / time of the most recent listing projection update, used for sorting
+     */
+    public OffsetDateTime getUpdatedAt() {
+        return updatedAt;
+    }
+
+    /**
+     * 支持 MyBatis-Plus Lambda 条件。 / Provides the getter used in MyBatis-Plus Lambda conditions.
+     *
+     * @return 整数 lamports 报价，用于市场价格排序 / integer-lamport price used to sort market asks
+     */
+    public BigInteger getPriceLamports() {
+        return priceLamports;
+    }
 }

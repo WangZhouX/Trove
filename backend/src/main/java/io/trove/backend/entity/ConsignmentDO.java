@@ -93,4 +93,64 @@ public record ConsignmentDO(
     public UUID getConsignmentId() {
         return consignmentId;
     }
+
+    /** @return 寄存钱包，用于限定本人查询。 / Depositor wallet for owner-scoped queries. */
+    public String getDepositorWallet() {
+        return depositorWallet;
+    }
+
+    /** @return 客户端请求编号，用于定位重试单据。 / Client request identifier for locating retries. */
+    public UUID getClientRequestId() {
+        return clientRequestId;
+    }
+
+    /** @return 状态列，用于过滤和条件状态更新。 / Status column for filtering and conditional transitions. */
+    public String getStatus() {
+        return status;
+    }
+
+    /** @return 创建时间，用于队列和历史排序。 / Creation time for queue and history ordering. */
+    public OffsetDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    /** @return 收货时间列。 / Receipt timestamp column. */
+    public OffsetDateTime getReceivedAt() {
+        return receivedAt;
+    }
+
+    /** @return 负责收货的钱包列。 / Wallet column for the receiving operator. */
+    public String getReceivedByWallet() {
+        return receivedByWallet;
+    }
+
+    /** @return 验收时间列。 / Inspection timestamp column. */
+    public OffsetDateTime getReviewedAt() {
+        return reviewedAt;
+    }
+
+    /** @return 负责验收的钱包列。 / Wallet column for the reviewing operator. */
+    public String getReviewedByWallet() {
+        return reviewedByWallet;
+    }
+
+    /** @return 私有的拒收原因列。 / Private rejection reason column. */
+    public String getRejectionReason() {
+        return rejectionReason;
+    }
+
+    /** @return 退回时间列。 / Return timestamp column. */
+    public OffsetDateTime getReturnedAt() {
+        return returnedAt;
+    }
+
+    /** @return 退件运单号列。 / Return tracking number column. */
+    public String getReturnTrackingNumber() {
+        return returnTrackingNumber;
+    }
+
+    /** @return 最近业务更新时间列。 / Most recent business update timestamp column. */
+    public OffsetDateTime getUpdatedAt() {
+        return updatedAt;
+    }
 }

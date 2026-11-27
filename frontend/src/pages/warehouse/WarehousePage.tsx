@@ -1,9 +1,10 @@
 import { useQuery } from "@tanstack/react-query";
-import { useEffect } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Link } from "react-router";
 import { useWalletAuth, warehouseOperatorRole } from "../../features/wallet-auth/WalletAuthProvider";
 import { checkWarehouseAccess } from "../../features/warehouse/api/checkWarehouseAccess";
 import { ApiError } from "../../shared/http/apiFetch";
+import { WarehouseWorkbench } from "./WarehouseWorkbench";
 import "./styles/warehouse.css";
 
 /** 验证工作台时使用的已登录身份。 / Signed-in identity used to verify warehouse access. */
@@ -16,6 +17,7 @@ type ActiveWalletSession = NonNullable<ReturnType<typeof useWalletAuth>["session
  */
 function VerifiedWarehouseWorkspace({ session }: { session: ActiveWalletSession }) {
   const { expireSession } = useWalletAuth();
+  const [denied, setDenied] = useState(false);
   const access = useQuery({
     // 令牌只随本次请求发送，查询缓存按身份和角色划分。 / Send the token only with the request and scope the query to identity and role.
     queryKey: ["warehouse-access", session.walletAddress, session.network, session.expiresAt, session.roles],
@@ -24,15 +26,29 @@ function VerifiedWarehouseWorkspace({ session }: { session: ActiveWalletSession 
     gcTime: 0,
   });
 
-  useEffect(() => {
-    if (access.error instanceof ApiError && access.error.status === 401) {
+  /**
+   * 会话失效时退出，仓库权限撤销时卸载业务内容。 / Sign out invalid sessions and remove operational content when warehouse access is revoked.
+   * @param error 当前账户的接口错误。 / Request error for the current account.
+   * @returns 是否已作为认证或授权错误处理。 / Whether authentication or authorization handled the error.
+   */
+  const handleAuthError = useCallback((error: unknown): boolean => {
+    if (!(error instanceof ApiError)) return false;
+    if (error.status === 401) {
       expireSession(session.token);
+      return true;
     }
-  }, [access.error, expireSession, session.token]);
+    if (error.status === 403) {
+      setDenied(true);
+      return true;
+    }
+    return false;
+  }, [expireSession, session.token]);
 
-  if (access.isPending || access.isFetching) return <p role="status">正在核验仓库权限…</p>;
+  useEffect(() => {
+    if (access.error) handleAuthError(access.error);
+  }, [access.error, handleAuthError]);
 
-  if (access.error instanceof ApiError && access.error.status === 403) {
+  if (denied || (access.error instanceof ApiError && access.error.status === 403)) {
     return (
       <div className="warehouse-status warehouse-status--denied">
         <p role="alert">当前钱包没有仓库权限。请在 Phantom 中切换到库管员账户并重新签名登录。</p>
@@ -40,6 +56,8 @@ function VerifiedWarehouseWorkspace({ session }: { session: ActiveWalletSession 
       </div>
     );
   }
+
+  if (access.isPending) return <p role="status">正在核验仓库权限…</p>;
 
   if (access.isError) {
     return (
@@ -59,11 +77,14 @@ function VerifiedWarehouseWorkspace({ session }: { session: ActiveWalletSession 
   }
 
   return (
-    <div className="warehouse-status warehouse-status--authorized">
-      <p role="status">已通过库管员权限验证</p>
-      <code>{identity.walletAddress}</code>
-      <p>这里将处理入库与验真、兑换与发货。</p>
-    </div>
+    <>
+      <p className="warehouse-verified">已通过库管员权限验证</p>
+      <WarehouseWorkbench
+        token={session.token}
+        scope={[session.walletAddress, session.network, session.expiresAt]}
+        onAuthError={handleAuthError}
+      />
+    </>
   );
 }
 
@@ -75,10 +96,10 @@ function VerifiedWarehouseWorkspace({ session }: { session: ActiveWalletSession 
 export function WarehousePage() {
   const { session } = useWalletAuth();
   return (
-    <section className="page">
+    <section className="page warehouse-page">
       <h1>仓库工作台</h1>
       {session ? (
-        <VerifiedWarehouseWorkspace session={session} />
+        <VerifiedWarehouseWorkspace key={`${session.walletAddress}:${session.network}:${session.expiresAt}`} session={session} />
       ) : (
         <div className="warehouse-status">
           <p>请使用已获授权的 Phantom 钱包签名登录，从顶部钱包按钮开始。</p>

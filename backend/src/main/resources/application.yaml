@@ -17,3 +17,10 @@ mybatis-plus:
     # Match record constructor parameters by column name so full projections can reorder columns.
     map-underscore-to-camel-case: true
     arg-name-based-constructor-auto-mapping: true
+
+trove:
+  solana:
+    # 钱包持仓走会话对应网络的服务端 RPC，生产演示可以替换为独立节点。
+    # Wallet holdings use a server-side RPC per session network; use a dedicated node for deployed demos.
+    devnet-rpc-url: ${TROVE_SOLANA_DEVNET_RPC_URL:https://api.devnet.solana.com}
+    localnet-rpc-url: ${TROVE_SOLANA_LOCALNET_RPC_URL:http://127.0.0.1:8899}

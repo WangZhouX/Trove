@@ -50,6 +50,19 @@ public record CustodyItemDO(
         @TableField("updated_at") OffsetDateTime updatedAt
 ) {
 
+    /** @return 实物保管状态 / physical custody state */
+    public String getState() {
+        return state;
+    }
+    /** @return 仓库登记的首次出库时间，仍在库时为空 / initial dispatch time recorded by the warehouse, null while in vault */
+    public OffsetDateTime getShippedOutAt() {
+        return shippedOutAt;
+    }
+    /** @return 在库记录最后更新时间 / latest update time on the custody record */
+    public OffsetDateTime getUpdatedAt() {
+        return updatedAt;
+    }
+
     /**
      * 供 MyBatis-Plus Lambda 查询读取 {@code item_id} 主键列。
      * Exposes the primary-key column {@code item_id} for MyBatis-Plus Lambda queries.
@@ -58,5 +71,15 @@ public record CustodyItemDO(
      */
     public UUID getItemId() {
         return itemId;
+    }
+
+    /** @return 寄存单 UUID，用于定位单据关联的在库记录。 / Consignment UUID for custody lookup. */
+    public UUID getConsignmentId() {
+        return consignmentId;
+    }
+
+    /** @return 实物唯一键，用于查验历史入库记录。 / Physical identity key for prior custody checks. */
+    public String getPhysicalIdentity() {
+        return physicalIdentity;
     }
 }

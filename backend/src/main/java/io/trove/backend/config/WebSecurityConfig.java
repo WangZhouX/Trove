@@ -68,6 +68,15 @@ class WebSecurityConfig {
                         .requestMatchers(HttpMethod.POST, "/api/v1/auth/wallet/challenges",
                                 "/api/v1/auth/wallet/sessions").permitAll()
                         .requestMatchers("/api/v1/auth/wallet/sessions/current").authenticated()
+                        .requestMatchers(HttpMethod.POST, "/api/v1/consignments").authenticated()
+                        .requestMatchers(HttpMethod.GET, "/api/v1/consignments/*",
+                                "/api/v1/consignments/*/photos", "/api/v1/consignments/*/photos/*").authenticated()
+                        .requestMatchers(HttpMethod.POST, "/api/v1/consignments/*/photos").authenticated()
+                        .requestMatchers(HttpMethod.POST, "/api/v1/items/*/redemption-drafts").authenticated()
+                        .requestMatchers(HttpMethod.GET, "/api/v1/market/listings",
+                                "/api/v1/items/*", "/api/v1/items/*/sales").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/v1/collection/me", "/api/v1/redemptions/me",
+                                "/api/v1/chain/transactions/*").authenticated()
                         .requestMatchers("/api/v1/warehouse", "/api/v1/warehouse/**")
                         .hasAuthority(WalletAccountRoleService.WAREHOUSE_OPERATOR)
                         .anyRequest().denyAll())

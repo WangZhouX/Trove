@@ -47,6 +47,43 @@ public record ShipmentDO(
         @TableField("updated_at") OffsetDateTime updatedAt
 ) {
 
+    /** @return 发货任务关联的链上网络 / chain network of the shipment task */
+    public String getNetwork() {
+        return network;
+    }
+    /** @return 绑定的实物编号 / bound physical item identifier */
+    public UUID getItemId() {
+        return itemId;
+    }
+    /** @return 履约任务当前状态 / current fulfillment status */
+    public String getStatus() {
+        return status;
+    }
+    /** @return 登记的承运商代码，未发货时为空 / recorded carrier code, null before dispatch */
+    public String getCarrierCode() {
+        return carrierCode;
+    }
+    /** @return 登记的私有运单号，未发货时为空 / recorded private tracking number, null before dispatch */
+    public String getTrackingNumber() {
+        return trackingNumber;
+    }
+    /** @return 首次出库时间，未出库时为空 / initial dispatch time, null before dispatch */
+    public OffsetDateTime getShippedAt() {
+        return shippedAt;
+    }
+    /** @return 签收时间，未签收时为空 / delivery time, null before delivery */
+    public OffsetDateTime getDeliveredAt() {
+        return deliveredAt;
+    }
+    /** @return 任务创建时间 / task creation time */
+    public OffsetDateTime getCreatedAt() {
+        return createdAt;
+    }
+    /** @return 任务更新时间，用于防止覆盖并发修改 / task update time used to prevent concurrent overwrites */
+    public OffsetDateTime getUpdatedAt() {
+        return updatedAt;
+    }
+
     /**
      * 供 MyBatis-Plus Lambda 查询读取 {@code shipment_id} 主键列。
      * Exposes the primary-key column {@code shipment_id} for MyBatis-Plus Lambda queries.

@@ -4,15 +4,12 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import io.trove.backend.api.WalletAuthApi;
-import io.trove.backend.api.WalletAuthException;
 import io.trove.backend.service.WalletAuthService;
 import io.trove.backend.service.WalletSessionService;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
-import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -108,29 +105,5 @@ public class WalletAuthController {
     public ResponseEntity<Void> deleteSession(@RequestHeader(HttpHeaders.AUTHORIZATION) String authorization) {
         sessions.revoke(authorization);
         return ResponseEntity.noContent().build();
-    }
-
-    /**
-     * 把认证失败转换成前端可显示的固定错误。 / Maps authentication failures to stable client errors.
-     *
-     * @param exception 认证失败原因 / authentication failure reason
-     * @return HTTP 错误状态和安全提示 / HTTP error status and safe feedback
-     */
-    @ExceptionHandler(WalletAuthException.class)
-    public ResponseEntity<WalletAuthException.Response> authError(WalletAuthException exception) {
-        var error = exception.error();
-        return ResponseEntity.status(error.status()).body(error.response());
-    }
-
-    /**
-     * 请求 JSON 或挑战编号无法解析时返回统一的 400 错误。
-     * Produces a stable 400 error for malformed JSON or challenge identifiers.
-     *
-     * @return 固定格式的登录请求错误 / stable sign-in request error
-     */
-    @ExceptionHandler(HttpMessageNotReadableException.class)
-    public ResponseEntity<WalletAuthException.Response> malformedRequest() {
-        var error = WalletAuthException.Error.INVALID_REQUEST;
-        return ResponseEntity.status(error.status()).body(error.response());
     }
 }

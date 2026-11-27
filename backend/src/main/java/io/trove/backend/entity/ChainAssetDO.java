@@ -61,4 +61,33 @@ public record ChainAssetDO(
     public UUID getItemId() {
         return itemId;
     }
+
+    /**
+     * 供 MyBatis-Plus Lambda 查询定位原铸造接收钱包的 Solana 公钥。
+     * Supports MyBatis-Plus Lambda queries that match the Solana public key of the original mint recipient.
+     *
+     * @return 原铸造接收钱包的 Solana 公钥 / Solana public key of the original mint recipient
+     */
+    public String getMintedToWallet() {
+        return mintedToWallet;
+    }
+
+    /**
+     * 供 MyBatis-Plus Lambda 查询定位最终确认的铸造交易签名。
+     * Supports MyBatis-Plus Lambda queries that match the signature of the finalized mint transaction.
+     *
+     * @return 最终确认的铸造交易签名 / signature of the finalized mint transaction
+     */
+    public String getMintTxSignature() {
+        return mintTxSignature;
+    }
+
+    /**
+     * 支持 MyBatis-Plus Lambda 条件。 / Provides the getter used in MyBatis-Plus Lambda conditions.
+     *
+     * @return 已索引的 NFT Mint 公钥，用于关联链上余额 / indexed NFT mint public key used to match on-chain balances
+     */
+    public String getMintAddress() {
+        return mintAddress;
+    }
 }

@@ -44,4 +44,14 @@ public record ConsignmentPhotoDO(
     public UUID getPhotoId() {
         return photoId;
     }
+
+    /** @return 相关寄存单编号 / associated consignment ID */
+    public UUID getConsignmentId() {
+        return consignmentId;
+    }
+
+    /** @return 寄存单内从零开始的排序号 / zero-based order within the consignment */
+    public short getSortOrder() {
+        return sortOrder;
+    }
 }

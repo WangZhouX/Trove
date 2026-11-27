@@ -81,4 +81,43 @@ public record MarketSaleDO(
     public BigInteger getListingNo() {
         return listingNo;
     }
+
+    /**
+     * 供 MyBatis-Plus Lambda 查询定位成交卖家钱包的 Solana 公钥。
+     * Supports MyBatis-Plus Lambda queries that match the Solana public key of the seller in the sale.
+     *
+     * @return 成交卖家钱包的 Solana 公钥 / Solana public key of the seller in the sale
+     */
+    public String getSellerWallet() {
+        return sellerWallet;
+    }
+
+    /**
+     * 供 MyBatis-Plus Lambda 查询定位成交买家钱包的 Solana 公钥。
+     * Supports MyBatis-Plus Lambda queries that match the Solana public key of the buyer in the sale.
+     *
+     * @return 成交买家钱包的 Solana 公钥 / Solana public key of the buyer in the sale
+     */
+    public String getBuyerWallet() {
+        return buyerWallet;
+    }
+
+    /**
+     * 供 MyBatis-Plus Lambda 查询定位最终确认的成交交易签名。
+     * Supports MyBatis-Plus Lambda queries that match the signature of the finalized sale transaction.
+     *
+     * @return 最终确认的成交交易签名 / signature of the finalized sale transaction
+     */
+    public String getTxSignature() {
+        return txSignature;
+    }
+
+    /**
+     * 支持 MyBatis-Plus Lambda 条件。 / Provides the getter used in MyBatis-Plus Lambda conditions.
+     *
+     * @return 链上分配的成交顺序号，用于查询成交历史 / on-chain sale sequence number used to order sale history
+     */
+    public BigInteger getSaleNo() {
+        return saleNo;
+    }
 }

@@ -1,0 +1,37 @@
+{
+  "inboundParcels": [
+    {
+      "itemFixtureId": "DEMO-CARD-001",
+      "inboundCarrier": "TROVE_DEMO",
+      "inboundTrackingNumber": "DEMO-IN-0001"
+    },
+    {
+      "itemFixtureId": "DEMO-CARD-002",
+      "inboundCarrier": "TROVE_DEMO",
+      "inboundTrackingNumber": "DEMO-IN-0002"
+    },
+    {
+      "itemFixtureId": "DEMO-TOY-001",
+      "inboundCarrier": "TROVE_DEMO",
+      "inboundTrackingNumber": "DEMO-IN-0003"
+    }
+  ],
+  "rejectedReturn": {
+    "itemFixtureId": "DEMO-CARD-002",
+    "rejectionReason": "实物上的证书编号与寄存申请不一致（演示）",
+    "returnTrackingNumber": "DEMO-RETURN-0001",
+    "expectedStatuses": ["REJECTED_PENDING_RETURN", "RETURNED"]
+  },
+  "redemptionShipment": {
+    "itemFixtureId": "DEMO-CARD-001",
+    "recipientWalletAlias": "C",
+    "recipient": {
+      "name": "演示收件人 C",
+      "phone": "00000000000",
+      "address": "演示市演示区 Trove 测试路 1 号（虚构）"
+    },
+    "carrierCode": "TROVE_DEMO",
+    "trackingNumber": "DEMO-OUT-0001",
+    "expectedStatuses": ["READY", "SHIPPED", "DELIVERED"]
+  }
+}

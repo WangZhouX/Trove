@@ -1,0 +1,10 @@
+{
+  "seriesId": "DEMO-POOL-001",
+  "title": "云野邮差 · 盲盒系列",
+  "priceLamports": 50000000,
+  "prizeFixtureIds": [
+    "DEMO-PRIZE-001",
+    "DEMO-PRIZE-002",
+    "DEMO-PRIZE-003"
+  ]
+}

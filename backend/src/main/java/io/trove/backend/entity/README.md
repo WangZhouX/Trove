@@ -2,9 +2,11 @@
 
 此目录集中存放 Trove 的 PostgreSQL 行模型。每张表对应一个以 `DO` 结尾的 Java record，使用 `@TableName` 声明目标表。Mapper 使用这些类型读写数据，HTTP 接口使用独立的请求和响应类型。
 
-当前实现范围为类型和表名映射。后续按 `docs/backend/erd.md` 与 `docs/backend/schema.sql` 补字段、列映射及中英文参数注释。`uuid` 对应 `UUID`，`timestamptz` 对应 `OffsetDateTime`，`numeric(20,0)` 的链上整数保留完整精度，可用 `BigInteger`，`bytea` 对应 `byte[]`。接入 `jsonb` 时明确 PostgreSQL 类型处理器及读写策略。
+15 个 record 按 `docs/backend/schema.sql` 映射 139 个字段，每个参数的 Javadoc 说明了中英文含义。`uuid` 对应 `UUID`，`timestamptz` 对应 `OffsetDateTime`，链上 `numeric(20,0)` 对应 `BigInteger`，`bytea` 对应 `byte[]`。整数列按可空性选择基本类型或包装类型。`jsonb` 映射为 `String`，使用 [字段类型处理器](typehandler/README.md) 绑定 PostgreSQL 参数。
 
-单列主键按表定义映射。复合主键包含下表列出的全部字段，单行查询、更新和删除通过完整键筛选。涉及网络的表使用 `network` 区分 Localnet 与 Devnet。
+MyBatis 为 PostgreSQL UUID 注册 JDBC 原生读写处理器，并按列名关联 record 的构造参数。查询返回 DO 时需包含完整字段。单独的列投影使用与之对应的 DTO。
+
+单列主键用 `@TableId` 和 `IdType.INPUT` 由调用方提供。复合主键的每列使用 `@TableField` 声明，更新实体时保持键值。单行查询、更新和删除使用全部键列。主键提供 `getXxx()` 供 MyBatis-Plus Lambda 引用。涉及网络的表使用 `network` 区分 Localnet 与 Devnet。
 
 | 表名 | Java 类型 | 主键列 |
 | --- | --- | --- |

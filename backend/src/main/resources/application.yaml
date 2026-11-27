@@ -10,3 +10,10 @@ spring:
     url: ${TROVE_DB_URL}
     username: ${TROVE_DB_USER}
     password: ${TROVE_DB_PASSWORD}
+
+mybatis-plus:
+  configuration:
+    # 以列名匹配 record 构造参数，允许查询更换完整列集的顺序。
+    # Match record constructor parameters by column name so full projections can reorder columns.
+    map-underscore-to-camel-case: true
+    arg-name-based-constructor-auto-mapping: true

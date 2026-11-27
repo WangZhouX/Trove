@@ -1,0 +1,20 @@
+[
+  {
+    "fixtureId": "DEMO-CARD-001",
+    "category": "CARD",
+    "title": "星轨旅人 · 收藏卡",
+    "condition": "演示评级 9，封装完整，正面无明显划痕",
+    "identityKind": "GRADING_CERTIFICATE",
+    "identityIssuer": "Trove Demo Grading",
+    "identityNumber": "DEMO-CERT-0001"
+  },
+  {
+    "fixtureId": "DEMO-CARD-002",
+    "category": "CARD",
+    "title": "极光灯塔 · 收藏卡",
+    "condition": "申报封装完整，用于证书编号不一致的驳回场景",
+    "identityKind": "GRADING_CERTIFICATE",
+    "identityIssuer": "Trove Demo Grading",
+    "identityNumber": "DEMO-CERT-0002"
+  }
+]

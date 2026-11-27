@@ -1,0 +1,42 @@
+[
+  {
+    "fixtureId": "DEMO-TOY-001",
+    "category": "TOY",
+    "title": "月面维修员 · 潮玩",
+    "condition": "原盒，配件齐全",
+    "identityKind": "ITEM_SERIAL",
+    "identityIssuer": "Trove Demo Toys",
+    "identityNumber": "DEMO-TOY-SERIAL-0001",
+    "inventoryUse": "CONSIGNMENT"
+  },
+  {
+    "fixtureId": "DEMO-PRIZE-001",
+    "category": "TOY",
+    "title": "云野邮差 · 晴空款",
+    "condition": "演示在库，配件齐全",
+    "identityKind": "ITEM_SERIAL",
+    "identityIssuer": "Trove Demo Toys",
+    "identityNumber": "DEMO-BOX-SERIAL-0001",
+    "inventoryUse": "BLIND_BOX_PRIZE"
+  },
+  {
+    "fixtureId": "DEMO-PRIZE-002",
+    "category": "TOY",
+    "title": "云野邮差 · 暮色款",
+    "condition": "演示在库，配件齐全",
+    "identityKind": "ITEM_SERIAL",
+    "identityIssuer": "Trove Demo Toys",
+    "identityNumber": "DEMO-BOX-SERIAL-0002",
+    "inventoryUse": "BLIND_BOX_PRIZE"
+  },
+  {
+    "fixtureId": "DEMO-PRIZE-003",
+    "category": "TOY",
+    "title": "云野邮差 · 雨雾款",
+    "condition": "演示在库，配件齐全",
+    "identityKind": "ITEM_SERIAL",
+    "identityIssuer": "Trove Demo Toys",
+    "identityNumber": "DEMO-BOX-SERIAL-0003",
+    "inventoryUse": "BLIND_BOX_PRIZE"
+  }
+]
